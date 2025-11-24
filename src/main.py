@@ -32,11 +32,9 @@ app.add_middleware(
 # Configuration CORS
 app.add_middleware(
     CORSMiddleware,
-    # Cette Regex autorise https://nimporte-quoi.vercel.app
-    allow_origin_regex=r"https://.*\.vercel\.app",
-    # On garde localhost pour le dev
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],
-    allow_credentials=True,
+    # Autorise toutes les origines (plus simple et robuste car pas de cookies)
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
