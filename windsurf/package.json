@@ -1,0 +1,20 @@
+{
+  "name": "windsurf",
+  "version": "1.0.0",
+  "description": "API stateless pour générer des QR codes à partir de texte ou d'URL avec personnalisation\r (marges, couleurs, correction d'erreur) et plusieurs formats de sortie (PNG, JPEG, SVG, PDF).\r Les QR codes ne sont **pas stockés** : chaque requête retourne immédiatement un binaire.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.22",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.17"
+  }
+}
