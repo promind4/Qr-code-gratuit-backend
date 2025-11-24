@@ -1,6 +1,7 @@
 from fastapi import Depends, FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware # <--- IMPORT AJOUTÉ
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 
@@ -18,18 +19,26 @@ app = FastAPI(
     description="Stateless API générant des QR codes de différentes formes et formats.",
 )
 
-# Configuration CORS
+# 1. Rate Limiting (En premier pour protéger)
+app.state.limiter = limiter
+app.add_middleware(SlowAPIMiddleware)
+
+# 2. TRUSTED HOSTS (CORRECTIF ERREUR 400)
+# Indispensable pour que Render accepte de répondre
+app.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=["*"]
+)
+
+# 3. CONFIGURATION CORS "OPEN BAR" (CORRECTIF FAILED TO FETCH)
+# On autorise tout le monde, sans cookies, pour être sûr que ça passe.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],
-    allow_credentials=True,
+    allow_origins=["*"],      # Accepte Vercel, Localhost, Tout le monde
+    allow_credentials=False,  # OBLIGATOIRE pour utiliser l'étoile "*"
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Configuration du rate limiting
-app.state.limiter = limiter
-app.add_middleware(SlowAPIMiddleware)
 
 # Mount static files for uploads
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
@@ -88,3 +97,4 @@ async def startup_event():
                 print(f"Cleaned up {count} old upload files")
     except Exception as e:
         print(f"Cleanup error: {e}")
+
