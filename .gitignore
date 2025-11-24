@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Environments
+.venv/
+venv/
+env/
+ENV/
+*.env
+*.env.*
+.env
+!.env.example
+
+# Tooling
+.pytest_cache/
+.mypy_cache/
+.coverage*
+htmlcov/
+.cache/
+
+# Editors/IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Docker
+*.pid

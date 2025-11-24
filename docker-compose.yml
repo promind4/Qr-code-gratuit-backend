@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    container_name: qrcode-api
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - ENVIRONMENT=development
+      - PYTHONPATH=/app
+      - JWT_SECRET_KEY=changeme
+      - JWT_ALGORITHM=HS256
+      - TOKEN_EXPIRE_MINUTES=1440
+      - RATE_LIMIT=1000
+    depends_on: []
