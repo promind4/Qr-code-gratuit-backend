@@ -18,21 +18,21 @@ app = FastAPI(
     description="Stateless API générant des QR codes de différentes formes et formats.",
 )
 
+# Configuration du rate limiting
+app.state.limiter = limiter
+app.add_middleware(SlowAPIMiddleware)
+
 # Configuration CORS
 app.add_middleware(
     CORSMiddleware,
     # Cette Regex autorise https://nimporte-quoi.vercel.app
-    allow_origin_regex="https://.*\.vercel\.app",
+    allow_origin_regex=r"https://.*\.vercel\.app",
     # On garde localhost pour le dev
     allow_origins=["http://localhost:5173", "http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Configuration du rate limiting
-app.state.limiter = limiter
-app.add_middleware(SlowAPIMiddleware)
 
 # Mount static files for uploads
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
