@@ -1,6 +1,7 @@
 from fastapi import Depends, FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 
@@ -21,6 +22,12 @@ app = FastAPI(
 # Configuration du rate limiting
 app.state.limiter = limiter
 app.add_middleware(SlowAPIMiddleware)
+
+# Fix pour erreur 400 sur Render : On accepte tous les noms de domaine
+app.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=["*"]
+)
 
 # Configuration CORS
 app.add_middleware(
